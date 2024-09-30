@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="lottie5_12_2_min.js"></script>
+  <script src="managerMenu.js"></script>
+  <title>核能运动会操作系统</title>
+  <style>
+    #event {
+      width: 50vh;
+    }
+
+    .all {
+      display: flex;
+      flex-direction: column;
+      overflow-x: auto;
+    }
+  </style>
+  <style>
+    .checkbox-wrapper input[type="checkbox"] {
+      visibility: hidden;
+      display: none;
+    }
+
+    .checkbox-wrapper *,
+    .checkbox-wrapper ::after,
+    .checkbox-wrapper ::before {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    .checkbox-wrapper {
+      position: relative;
+      display: block;
+      overflow: hidden;
+    }
+
+    .checkbox-wrapper .label {
+      cursor: pointer;
+    }
+
+    .checkbox-wrapper .check {
+      width: 50px;
+      height: 50px;
+      position: absolute;
+      opacity: 0;
+    }
+
+    .checkbox-wrapper .label svg {
+      vertical-align: middle;
+    }
+
+    .checkbox-wrapper .path1 {
+      stroke-dasharray: 400;
+      stroke-dashoffset: 400;
+      transition: .5s stroke-dashoffset;
+      opacity: 0;
+    }
+
+    .checkbox-wrapper .check:checked+label svg g path {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="all">
+    <div class="choose">
+      <label for="event">项目:</label>
+      <select id="event" name="event"></select>
+      <input type="submit" id="submit" value="开始检录" />
+    </div>
+    <table id="myTable" border="1"></table>
+    <div class="blank-space" style="height: 100vh;"><br><br><br><br><br></div>
+  </div>
+</body>
+<script>
+  All_Things_I_Should_do();
+</script>
+<script>
+  const chose_event = document.getElementById("event");
+  fetch("/api/all_event")
+    .then((response) => response.json())
+    .then((data) => {
+      const param1Options = data;
+      console.info(param1Options);
+      for (let i = 0; i < param1Options.length; i++) {
+        const option = param1Options[i];
+        const opt = document.createElement("option");
+        opt.textContent = option;
+        chose_event.appendChild(opt);
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+  function getdata() {
+    const event_name = document.getElementById("event").value;
+    document.getElementById("myTable").innerHTML=""
+
+    // 这里你可以使用AJAX或其他方法发送参数到API
+    fetch(`/api/find_event/${event_name}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.info(data)
+
+        // 将JSON数据解析为JavaScript对象
+        var list = data;
+
+        // 创建表头
+        var header = document.createElement("tr");
+        var th1 = document.createElement("th");
+        th1.innerHTML = "班级";
+        var th2 = document.createElement("th");
+        th2.innerHTML = "名字";
+        var th3 = document.createElement("th");
+        th3.innerHTML = "签到";
+        header.appendChild(th1);
+        header.appendChild(th2);
+        header.appendChild(th3);
+        document.getElementById("myTable").appendChild(header);
+
+        // 遍历列表项，将它们添加到表格中
+        for (let i = 0; i < list.length; i++) {
+          console.info(list[i])
+          var row = document.createElement("tr");
+          var td1 = document.createElement("td");
+          td1.innerHTML = list[i].Class;
+          var td2 = document.createElement("td");
+          td2.innerHTML = list[i].Name;
+          var td3 = document.createElement("td");
+          if (list[i].Status == "未比赛") {
+            td3.innerHTML = "待签到";
+            const button = document.createElement('button');
+            button.textContent = "立即签到";
+            button.onclick = function () {
+              
+              fetch(`/api/check/${list[i].Class}/${list[i].Name}/${event_name}`)
+              getdata()
+            }
+            td3.appendChild(button);
+          } else {
+            td3.innerHTML = "已检录";
+          }
+          row.appendChild(td1);
+          row.appendChild(td2);
+          row.appendChild(td3);
+          document.getElementById("myTable").appendChild(row);
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  };
+  document
+    .getElementById("submit")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      getdata()
+    })
+
+</script>
+
+</html>

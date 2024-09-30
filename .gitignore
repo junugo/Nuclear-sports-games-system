@@ -1,0 +1,5 @@
+/Temp/*
+/data/*
+/Abandoned
+.venv
+.idea
