@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>按钮生成器</title>
+</head>
+<body>
+    <label for="numInput">请输入一个数字：</label>
+    <input type="number" id="numInput" min="1" max="100" value="1">
+    <button onclick="generateButtons()">生成按钮</button>
+    <div id="buttonContainer"></div>
+
+    <script>
+        function generateButtons() {
+            const numInput = document.getElementById('numInput');
+            const buttonContainer = document.getElementById('buttonContainer');
+            const num = parseInt(numInput.value);
+
+            // 清空按钮容器
+            buttonContainer.innerHTML = '';
+
+            for (let i = 1; i <= num; i++) {
+                const button = document.createElement('button');
+                button.textContent = i.toString();
+                button.onclick = function() {
+                    alert('您点击了按钮 ' + i);
+                }
+                buttonContainer.appendChild(button);
+            }
+        }
+    </script>
+</body>
+</html>

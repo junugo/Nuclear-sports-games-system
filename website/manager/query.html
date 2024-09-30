@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="lottie5_12_2_min.js"></script>
+    <script src="managerMenu.js"></script>
+    <title>核能运动会操作系统</title>
+    <style>
+      .tab-button {
+        cursor: pointer;
+        padding: 10px 15px;
+        margin: 0;
+        border: none;
+        background-color: #f2f2f2;
+        border-bottom: 2px solid #ccc;
+      }
+
+      .tab-button.active {
+        background-color: #ddd;
+      }
+
+      .tab-content {
+        display: none;
+        padding: 10px;
+        border-top: 1px solid #ccc;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .all {
+        display: flex;
+        flex-direction: column;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="all">
+      <div class="tabs">
+        <button class="tab-button active" onclick="switchTab(0)">项目</button>
+        <button class="tab-button" onclick="switchTab(1)">场次</button>
+        <button class="tab-button" onclick="switchTab(2)">班级</button>
+        <button class="tab-button" onclick="switchTab(3)">年级</button>
+        <div class="tab-content active">
+          <select id="event" name="event"></select>
+          <button id="submit1">载入</button>
+          <button id="download1">下载</button>
+        </div>
+        <div class="tab-content">
+          <select id="match" name="match"></select>
+          <button id="submit2">载入</button>
+          <button id="download2">下载</button>
+        </div>
+        <div class="tab-content">
+          <select id="class" name="class"></select>
+          <button id="submit3">载入</button>
+          <button id="download3">下载</button>
+        </div>
+        <div class="tab-content">
+          <select id="grade" name="grade"></select>
+          <button id="submit4">载入</button>
+          <button id="download4">下载</button>
+        </div>
+      </div>
+      <table id="myTable" border="1"></table>
+      <div class="blank-space" style="height: 100vh">
+        <br /><br /><br /><br /><br />
+      </div>
+    </div>
+  </body>
+  <script>
+    function switchTab(index) {
+      const buttons = document.querySelectorAll(".tab-button");
+      const contents = document.querySelectorAll(".tab-content");
+
+      buttons.forEach((button, idx) => {
+        button.classList.remove("active");
+        contents[idx].classList.remove("active");
+      });
+
+      buttons[index].classList.add("active");
+      contents[index].classList.add("active");
+    }
+
+    fetch("/api/all_event")
+      .then((response) => response.json())
+      .then((data) => {
+        const chose_event = document.getElementById("event");
+        const param1Options = data;
+        console.info(param1Options);
+        for (let i = 0; i < param1Options.length; i++) {
+          const option = param1Options[i];
+          const opt = document.createElement("option");
+          opt.textContent = option;
+          chose_event.appendChild(opt);
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+
+    fetch("/api/all_match")
+      .then((response) => response.json())
+      .then((data) => {
+        const chose_event = document.getElementById("match");
+        const param1Options = data;
+        console.info(param1Options);
+        for (let i = 0; i < param1Options.length; i++) {
+          const option = param1Options[i];
+          const opt = document.createElement("option");
+          opt.textContent = option;
+          chose_event.appendChild(opt);
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+    fetch("/api/all_class")
+      .then((response) => response.json())
+      .then((data) => {
+        const chose_event = document.getElementById("class");
+        const param1Options = data;
+        console.info(param1Options);
+        for (let i = 0; i < param1Options.length; i++) {
+          const option = param1Options[i];
+          const opt = document.createElement("option");
+          opt.textContent = option;
+          chose_event.appendChild(opt);
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+    fetch("/api/all_grade")
+      .then((response) => response.json())
+      .then((data) => {
+        const chose_event = document.getElementById("grade");
+        const param1Options = data;
+        console.info(param1Options);
+        for (let i = 0; i < param1Options.length; i++) {
+          const option = param1Options[i];
+          const opt = document.createElement("option");
+          opt.textContent = option;
+          chose_event.appendChild(opt);
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  </script>
+  <script>
+    All_Things_I_Should_do();
+  </script>
+  <script>
+    function download(path, file) {
+      // 创建一个新的XMLHttpRequest对象
+      var xhr = new XMLHttpRequest();
+
+      // 设置请求的类型和URL
+      xhr.open("GET", path, true);
+
+      // 设置响应类型
+      xhr.responseType = "blob";
+
+      // 添加事件监听器来处理请求完成和失败的情况
+      xhr.onload = function () {
+        if (this.status === 200) {
+          // 请求成功，创建一个下载链接
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(this.response);
+          a.download = file;
+          a.click();
+        } else {
+          alert("请求失败，状态码：" + this.status);
+        }
+      };
+
+      xhr.onerror = function () {
+        alert("网络错误");
+      };
+
+      // 发送请求
+      xhr.send();
+    }
+    document.getElementById("submit1").addEventListener("click", function () {
+      console.log("clicked");
+      var event_name = document.getElementById("event").value;
+      document.getElementById("myTable").innerHTML = "";
+      fetch(`/api/find_event/${event_name}`)
+        .then((response) => response.json())
+        .then((data) => {
+          // 将JSON数据解析为JavaScript对象
+          var list = data;
+
+          // 创建表头
+          var header = document.createElement("tr");
+          var th1 = document.createElement("th");
+          th1.innerHTML = "班级";
+          var th2 = document.createElement("th");
+          th2.innerHTML = "名字";
+          var th3 = document.createElement("th");
+          th3.innerHTML = "场次";
+          var th4 = document.createElement("th");
+          th4.innerHTML = "状态";
+          var th5 = document.createElement("th");
+          th5.innerHTML = "成绩";
+          var th6 = document.createElement("th");
+          th6.innerHTML = "分数";
+          header.appendChild(th1);
+          header.appendChild(th2);
+          header.appendChild(th3);
+          header.appendChild(th4);
+          header.appendChild(th5);
+          header.appendChild(th6);
+          document.getElementById("myTable").appendChild(header);
+
+          // 遍历列表项，将它们添加到表格中
+          for (let i = 0; i < list.length; i++) {
+            var row = document.createElement("tr");
+            var td1 = document.createElement("td");
+            td1.innerHTML = list[i].Class;
+
+            var td2 = document.createElement("td");
+            td2.innerHTML = list[i].Name;
+
+            var td3 = document.createElement("td");
+            td3.innerHTML = list[i].Match;
+
+            var td4 = document.createElement("td");
+            td4.innerHTML = list[i].Status;
+
+            var td5 = document.createElement("td");
+            td5.innerHTML = list[i].Result;
+
+            var td6 = document.createElement("td");
+            td6.innerHTML = list[i].Score;
+
+            row.appendChild(td1);
+            row.appendChild(td2);
+            row.appendChild(td3);
+            row.appendChild(td4);
+            row.appendChild(td5);
+            row.appendChild(td6);
+            document.getElementById("myTable").appendChild(row);
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    });
+    document.getElementById("download1").addEventListener("click", function () {
+      var event_name = document.getElementById("event").value;
+      download(`/api/download_event/${event_name}`, `${event_name}.xlsx`)
+    });
+    document.getElementById("submit3").addEventListener("click", function () {
+      console.log("clicked");
+      var event_name = document.getElementById("class").value;
+      document.getElementById("myTable").innerHTML = "";
+      fetch(`/api/find_class/${event_name}`)
+        .then((response) => response.json())
+        .then((data) => {
+          // 将JSON数据解析为JavaScript对象
+          var list = data;
+
+          // 创建表头
+          var header = document.createElement("tr");
+          var th1 = document.createElement("th");
+          th1.innerHTML = "班级";
+          var th2 = document.createElement("th");
+          th2.innerHTML = "名字";
+          var th3 = document.createElement("th");
+          th3.innerHTML = "比赛";
+          var th4 = document.createElement("th");
+          th4.innerHTML = "场次";
+          var th5 = document.createElement("th");
+          th5.innerHTML = "状态";
+          var th6 = document.createElement("th");
+          th6.innerHTML = "成绩";
+          var th7 = document.createElement("th");
+          th7.innerHTML = "分数";
+          header.appendChild(th1);
+          header.appendChild(th2);
+          header.appendChild(th3);
+          header.appendChild(th4);
+          header.appendChild(th5);
+          header.appendChild(th6);
+          header.appendChild(th7);
+          document.getElementById("myTable").appendChild(header);
+
+          // 遍历列表项，将它们添加到表格中
+          for (let i = 0; i < list.length; i++) {
+            var row = document.createElement("tr");
+            var td1 = document.createElement("td");
+            td1.innerHTML = list[i].Class;
+
+            var td2 = document.createElement("td");
+            td2.innerHTML = list[i].Name;
+
+            var td3 = document.createElement("td");
+            td3.innerHTML = list[i].Event;
+
+            var td4 = document.createElement("td");
+            td4.innerHTML = list[i].Match;
+
+            var td5 = document.createElement("td");
+            td5.innerHTML = list[i].Status;
+
+            var td6 = document.createElement("td");
+            td6.innerHTML = list[i].Result;
+
+            var td7 = document.createElement("td");
+            td7.innerHTML = list[i].Score;
+
+            row.appendChild(td1);
+            row.appendChild(td2);
+            row.appendChild(td3);
+            row.appendChild(td4);
+            row.appendChild(td5);
+            row.appendChild(td6);
+            row.appendChild(td7);
+            document.getElementById("myTable").appendChild(row);
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    });
+    document.getElementById("download3").addEventListener("click", function () {
+      var class_name = document.getElementById("class").value;
+      download(`/api/query_class/${class_name}`, `${class_name}.xlsx`)
+    });
+  </script>
+</html>

@@ -1,0 +1,11 @@
+pillow~=10.3.0
+pandas~=2.2.2
+uvicorn~=0.29.0
+fastapi~=0.110.2
+python-multipart~=0.0.9
+openpyxl~=3.2.0b1
+qrcode~=7.4.2
+opencv-contrib-python~=4.9.0.80
+numpy~=1.26.4
+opencv-python~=4.9.0.80
+imutils~=0.5.4

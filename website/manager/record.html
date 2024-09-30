@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="lottie5_12_2_min.js"></script>
+  <script src="/manager/managerMenu.js"></script>
+  <title>核能运动会操作系统</title>
+  <style>
+    body {
+      margin: 0;
+      /* 添加这一行，以去除 body 的默认边距 */
+    }
+
+    .box {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      /* 将 .box 元素移到背景，使其位于最底层 */
+    }
+
+    .round-box {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      position: absolute;
+      overflow: hidden;
+    }
+
+    .round:first-child {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 24px solid #2e33c9;
+      box-sizing: border-box;
+      position: absolute;
+      top: -24px;
+      left: -38px;
+      animation: move-y 3.5s linear infinite;
+    }
+
+    .round:last-child {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #ae00b1 0%, #e7ce1b 100%);
+      box-sizing: border-box;
+      position: absolute;
+      bottom: -38px;
+      right: -28px;
+      animation: move-y 5s ease-in-out infinite;
+    }
+
+    .bg-filter {
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(4px);
+      border-radius: 10px;
+      box-sizing: border-box;
+      position: absolute;
+    }
+
+    @keyframes move-y {
+      0% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-16px);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    .normal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: linear-gradient(to bottom right, #FF6B6B, #FFC154);
+    }
+
+    .good-lablel {
+      height: 70px;
+      padding: 0 20px;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      background-color: #f2fff7;
+      font-size: 32px;
+      font-weight: 700;
+      box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.2), -6px -6px 16px rgba(255, 255, 255, 0.8), inset 0px 0px 0px rgba(0, 0, 0, 0.2),
+        inset 0px 0px 0px rgba(255, 255, 255, 0.8);
+      transition: 0.2s;
+      margin: 25px;
+      z-index: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="normal">
+
+    <div class="box">
+      <div class="round-box">
+        <div class="round"></div>
+        <div class="round"></div>
+      </div>
+      <div class="bg-filter"></div>
+    </div>
+    <div class="good-lablel">hello
+    </div>
+  </div>
+</body>
+<script>
+  All_Things_I_Should_do();
+</script>
+
+</html>
