@@ -154,15 +154,17 @@ class data_manager:
                 missing_keys = required_keys - set(config.keys())
                 if missing_keys:
                     raise KeyError(f"Missing required keys in config: {missing_keys}")
+                path = os.path.join(self.event_path, f"{Event}.json")
+                writeJson(path, config)
 
             @ff
             def get_event(self, Event: str):
-                path = os.path.join(self.student_path, f"{Id}.json")
+                path = os.path.join(self.event_path, f"{Event}.json")
                 return readJson(path)
 
             @ff
             def delete_event(self, Event: str):
-                path = os.path.join(self.student_path, f"{Id}.json")
+                path = os.path.join(self.event_path, f"{Event}.json")
                 os.remove(path)
 
             ### 场次管理 ###

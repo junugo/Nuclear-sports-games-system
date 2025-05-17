@@ -1,9 +1,17 @@
-![icon](https://github.com/junugo/Nuclear-sports-games-system/raw/master/Non-development%20file/icon.svg)
+<div align=center>
+<img src="https://github.com/junugo/Nuclear-sports-games-system/raw/master/Non-development%20file/icon.svg" alt="icon">
 
-# 核能运动会操作系统
-# Nuclear-sports-games-system
+
+<h1>核能运动会操作系统</h1>
+<h3>Nuclear-sports-games-system</h3>
+<img src="https://img.shields.io/github/license/junugo/Nuclear-sports-games-system" alt="license">
+<img src="https://img.shields.io/github/repo-size/junugo/Nuclear-sports-games-system" alt="repo-size">
+
+<img src="https://img.shields.io/github/issues/junugo/Nuclear-sports-games-system" alt="issues">
+<img src="https://img.shields.io/github/issues-closed/junugo/Nuclear-sports-games-system" alt="closed-issues">
 
 故名思意，是一款非常爆炸的体育运动会管理系统
+</div>
 
 更多功能正在赶来
 - [ ] 数据大屏
@@ -47,6 +55,10 @@ pip install -r requirements.txt
 
 ### 请注意
 此程序为 **Windows 系统** 设计，如果您使用其它系统，部分附加功能 **可能运作不正常** 。（如 frp 功能）如果您需要使用这些功能，请自行更换对应代码
+
+## 致谢
+前端：[**Vue**](https://github.com/vuejs/vue) + [**semi-design-vue**](https://github.com/rashagu/semi-design-vue)
+后端：[**Fast-api**](https://github.com/tiangolo/fastapi) + [**Uvicorn**](https://github.com/uvicorn/uvicorn)
 
 ## 图标解释
 ~~这个图标是我花了多达5分钟完成的~~
